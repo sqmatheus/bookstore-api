@@ -30,6 +30,6 @@ namespace BookStore.Models
 
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
-        public ICollection<BookGenre> BookGenres { get; set; } = null!;
+        public ICollection<BookGenre> BookGenres { get; set; } = new List<BookGenre>();
     }
 }
