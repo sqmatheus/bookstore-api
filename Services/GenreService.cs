@@ -19,7 +19,7 @@ namespace BookStore.Services
 
         public async Task<bool> DeleteGenre(int id)
         {
-            var genre = await _genreRepository.GetGenreById(id) ?? throw new NotFoundException();
+            var genre = await _genreRepository.GetGenreById(id) ?? throw new GenreNotFoundException();
             return await _genreRepository.DeleteGenre(genre);
         }
 
@@ -31,13 +31,13 @@ namespace BookStore.Services
 
         public async Task<GenreResponseDTO> GetGenreById(int id)
         {
-            var genre = await _genreRepository.GetGenreById(id) ?? throw new NotFoundException();
+            var genre = await _genreRepository.GetGenreById(id) ?? throw new GenreNotFoundException();
             return GenreResponseDTO.FromModel(genre);
         }
 
         public async Task<GenreResponseDTO> GetGenreBySlug(string slug)
         {
-            var genre = await _genreRepository.GetGenreBySlug(slug) ?? throw new NotFoundException();
+            var genre = await _genreRepository.GetGenreBySlug(slug) ?? throw new GenreNotFoundException();
             return GenreResponseDTO.FromModel(genre);
         }
 

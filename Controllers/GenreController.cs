@@ -39,7 +39,7 @@ namespace BookStore.Controllers
             {
                 return Ok(await _genreService.GetGenreById(id));
             }
-            catch (NotFoundException)
+            catch (GenreNotFoundException)
             {
                 return NotFound();
             }
@@ -58,7 +58,7 @@ namespace BookStore.Controllers
             {
                 return Ok(await _genreService.GetGenreBySlug(slug));
             }
-            catch (NotFoundException)
+            catch (GenreNotFoundException)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace BookStore.Controllers
                 await _genreService.DeleteGenre(id);
                 return NoContent();
             }
-            catch (NotFoundException)
+            catch (GenreNotFoundException)
             {
                 return NotFound();
             }

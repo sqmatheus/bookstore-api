@@ -24,6 +24,8 @@ namespace BookStore.DTOs
         [Required(ErrorMessage = "The publication date field is mandatory")]
         public DateTime PublicationDate { get; set; }
 
+        public IEnumerable<int> GenreIds { get; set; } = new List<int>();
+
         public Book ToModel()
         {
             return new Book()

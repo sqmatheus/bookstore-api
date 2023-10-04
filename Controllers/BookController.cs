@@ -39,7 +39,7 @@ namespace BookStore.Controllers
             {
                 return Ok(await _bookService.GetBookById(id));
             }
-            catch (NotFoundException)
+            catch (BookNotFoundException)
             {
                 return NotFound();
             }
@@ -58,7 +58,7 @@ namespace BookStore.Controllers
             {
                 return Ok(await _bookService.GetBookBySlug(slug));
             }
-            catch (NotFoundException)
+            catch (BookNotFoundException)
             {
                 return NotFound();
             }
@@ -67,6 +67,7 @@ namespace BookStore.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(BookResponseDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<BookResponseDTO>> CreateBook([FromBody] BookRequestDTO payload)
@@ -77,6 +78,14 @@ namespace BookStore.Controllers
             try
             {
                 return StatusCode(StatusCodes.Status201Created, await _bookService.CreateBook(payload));
+            }
+            catch (GenreNotFoundException)
+            {
+                return NotFound(new
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Message = "Genre not found"
+                });
             }
             catch (DbUpdateException ex)
             {
@@ -100,7 +109,7 @@ namespace BookStore.Controllers
                 await _bookService.DeleteBook(id);
                 return NoContent();
             }
-            catch (NotFoundException)
+            catch (BookNotFoundException)
             {
                 return NotFound();
             }
@@ -121,9 +130,17 @@ namespace BookStore.Controllers
             {
                 return Ok(await _bookService.UpdateBook(id, payload));
             }
-            catch (NotFoundException)
+            catch (BookNotFoundException)
             {
                 return NotFound();
+            }
+            catch (GenreNotFoundException)
+            {
+                return NotFound(new
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Message = "Genre not found"
+                });
             }
             catch (DbUpdateException ex)
             {
