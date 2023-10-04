@@ -3,6 +3,7 @@ using BookStore.Helpers;
 using BookStore.Interfaces;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookStore.Repositories
 {
@@ -14,7 +15,7 @@ namespace BookStore.Repositories
 
         public Task<bool> ExistsBook(int id) => _context.Books.AnyAsync(b => b.Id == id);
 
-        public Task<List<Book>> GetBooks(Pagination pagination)
+        public Task<List<Book>> GetBooks(Pagination pagination, string? query)
         {
             var books = _context.Books
                 .Include(b => b.BookGenres)
@@ -26,6 +27,9 @@ namespace BookStore.Repositories
 
             if (pagination.Limit is not null)
                 books = books.Take(pagination.Limit.Value);
+
+            if (query != null && !query.IsNullOrEmpty())
+                books = books.Where(b => b.Slug.Replace("-", "").Contains(query.ToLower()));
 
             return books.ToListAsync();
         }

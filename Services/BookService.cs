@@ -51,9 +51,9 @@ namespace BookStore.Services
             return BookResponseDTO.FromModel(book);
         }
 
-        public async Task<IEnumerable<BookResponseDTO>> GetBooks(Pagination pagination)
+        public async Task<IEnumerable<BookResponseDTO>> GetBooks(Pagination pagination, string? query)
         {
-            var books = await _bookRepository.GetBooks(pagination);
+            var books = await _bookRepository.GetBooks(pagination, query);
             return books.Select(BookResponseDTO.FromModel);
         }
 

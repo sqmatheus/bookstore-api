@@ -18,12 +18,12 @@ namespace BookStore.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<BookResponseDTO>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<BookResponseDTO>>> GetBooks([FromQuery] Pagination pagination)
+        public async Task<ActionResult<IEnumerable<BookResponseDTO>>> GetBooks([FromQuery] Pagination pagination, [FromQuery] string? query)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            return Ok(await _bookService.GetBooks(pagination));
+            return Ok(await _bookService.GetBooks(pagination, query));
         }
 
         [HttpGet("id/{id}")]
